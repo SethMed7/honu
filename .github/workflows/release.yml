@@ -1,0 +1,90 @@
+name: Release
+on:
+  push:
+    tags: ['v[0-9]*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Require a version tag
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+        run: test "$REF_TYPE" = tag
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install chromium
+      - name: Verify the exact tagged source before accessing signing credentials
+        run: bun run verify
+
+  build:
+    needs: verify
+    runs-on: macos-15
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [aarch64-apple-darwin, x86_64-apple-darwin]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: .bun-version
+      - run: bun install --frozen-lockfile
+      - name: Build, sign, notarize, staple, and validate app and DMG (rotli sequence)
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          RELEASE_TARGET: ${{ matrix.target }}
+        run: bash scripts/release.sh "$RELEASE_TARGET"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: honu-${{ matrix.target }}
+          path: dist-release/${{ matrix.target }}/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    needs: [verify, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: honu-*
+          path: artifacts
+          merge-multiple: true
+      - name: Verify checksums and publish both architectures together
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd artifacts
+          for arch in aarch64 x86_64; do
+            test -f "Honu_$arch.dmg"
+            test -f "Honu_$arch.app.tar.gz"
+            sha256sum --check "SHA256SUMS-$arch.txt"
+          done
+          gh release create "$RELEASE_TAG" ./* \
+            --repo "$RELEASE_REPO" --verify-tag \
+            --title "Honu $RELEASE_TAG" --generate-notes

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 2,
+  "sources": [
+    "site/src/styles.css",
+    "src/styles.css"
+  ],
+  "colors": {
+    "bg": "#101513",
+    "surface": "#191e1c",
+    "ink": "#eef3f1",
+    "muted": "#9faba5",
+    "accent": "#82eab9",
+    "line": "#343d39",
+    "on-accent": "#0c1f17"
+  },
+  "motion": {
+    "transitionMs": 160,
+    "heroMs": 650,
+    "reducedMotion": "none"
+  },
+  "breakpoints": {
+    "compact": 600,
+    "medium": 900
+  },
+  "components": [
+    "brand",
+    "button-primary",
+    "button-secondary",
+    "preview-hud",
+    "drawing-tools",
+    "shortcuts"
+  ]
+}

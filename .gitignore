@@ -1,0 +1,17 @@
+node_modules/
+.cache/
+.deploy/
+dist/
+site/dist/
+src-tauri/target/
+src-tauri/gen/
+public/excalidraw-assets/
+dist-release/
+test-results/
+playwright-report/
+.DS_Store
+.env
+.env.*
+*.p12
+*.key
+*.keychain-db

@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main-overlay",
+  "description": "Only the local overlay may hide itself or quit Honu.",
+  "windows": ["main"],
+  "permissions": ["core:window:allow-hide", "process:allow-exit"]
+}
