@@ -102,7 +102,9 @@ mkdir "$WORK/dmg"
 ditto "$APP" "$WORK/dmg/Honu.app"
 ln -s /Applications "$WORK/dmg/Applications"
 DMG="$OUT/Honu_$ARCH.dmg"
-hdiutil create -volname "Honu $VERSION" -srcfolder "$WORK/dmg" -ov -format UDZO "$DMG"
+# Explicit HFS+ avoids APFS helper attachments retaining the newly created
+# image while notarytool performs its UDIF preflight validation.
+hdiutil create -fs HFS+ -volname "Honu $VERSION" -srcfolder "$WORK/dmg" -ov -format UDZO "$DMG"
 codesign --force --timestamp --sign "$APPLE_SIGNING_IDENTITY" "$DMG"
 notarize "$DMG" "$OUT/notary-dmg-$ARCH.json"
 xcrun stapler staple "$DMG"

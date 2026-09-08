@@ -118,11 +118,11 @@ directory. No server, React runtime, external font request, or analytics is
 required. `site/index.html` is also a source template for an existing Tailwind
 site; keep the stylesheet and small preview script with it.
 
-Links assume the public repository/release destination is
-`https://github.com/SethMed7/honu`. Change `site/index.html` if using a separate
-releases repository. Architecture-specific download URLs become available
-after the first release publishes `Honu_aarch64.dmg` and `Honu_x86_64.dmg`.
-A local build does not deploy the site or publish a GitHub release.
+The Railway site is **https://honu.up.railway.app/** and serves installers from
+its own `downloads/` directory. The public GitHub mirror is
+`SethMed7/honu-releases`; source is private in `SethMed7/honu`.
+See [Railway setup](docs/railway.md) for rebuilding, deploying, and adding DNS.
+A normal local build does not deploy or publish; use the explicit deploy script.
 
 ## Validate and build
 

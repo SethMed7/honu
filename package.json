@@ -12,6 +12,8 @@
     "dev:app": "bun run assets && tauri dev",
     "dev:site": "vite --config site/vite.config.ts --host 127.0.0.1",
     "build:site": "vite build --config site/vite.config.ts",
+    "favicons": "bun scripts/generate-favicons.ts",
+    "package:railway": "bun scripts/package-railway.ts",
     "check": "tsc --noEmit && bun test tests && bash -n scripts/release.sh && bun scripts/check-versions.ts",
     "test:e2e": "playwright test",
     "verify": "bun run check && bun run build && bun run build:site && bun run test:e2e && cargo fmt --manifest-path src-tauri/Cargo.toml --check && cargo clippy --manifest-path src-tauri/Cargo.toml --locked -- -D warnings && cargo test --manifest-path src-tauri/Cargo.toml --locked"
