@@ -2,6 +2,10 @@
 
 Production URL: **https://honu.up.railway.app/**
 
+Initial production deployment `533f3c8e-aa83-4190-89a7-e1a48997fae1` succeeded
+on 2026-09-08. Version 0.1.0 is also available in the public
+[GitHub release](https://github.com/SethMed7/honu-releases/releases/tag/v0.1.0).
+
 Railway project `honu`, service `site`, environment `production`, in Seth
 Medina's personal workspace. Public target IDs are in `deploy/target.json`;
 Railway CLI credentials stay in the CLI's existing authenticated session.

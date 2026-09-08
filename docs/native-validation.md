@@ -5,7 +5,14 @@ production browser tests passed; both frontend builds passed; Rust checking
 passed for Apple Silicon and Intel; Clippy and formatting passed. A development
 Honu.app was built and launched, then stopped. Native UI automation was blocked
 by pending Computer Use permissions, so the visual/tray/Spaces checks below
-remain unverified. Signing, notarization, and publication were not executed.
+remain unverified.
+
+Release-session evidence (2026-09-08): both architecture apps and DMGs were
+signed, accepted by Apple notarization, stapled, and validated. Extracted tar
+apps passed signature and Gatekeeper assessment. Both DMGs downloaded from
+the live Railway URL passed stapler and Gatekeeper checks; all four public
+installer/archive downloads matched their local release checksums. This
+does not replace the native interaction and clean-Mac checks below.
 
 Browser checks cannot prove AppKit compositing, global hotkeys, tray events,
 Spaces, or Gatekeeper. Run these against each shipping architecture:

@@ -11,7 +11,9 @@ updater signing secret. This deliberately omits rotli's `.sig`/`latest.json`.
 
 ## GitHub setup
 
-Create the repository (landing-page default: `SethMed7/honu`) and configure:
+Source lives in private `SethMed7/honu`; public installers live in
+`SethMed7/honu-releases` and on Railway. Configure these secrets in the source
+repository before running a signed Actions release:
 
 | Actions secret | Value |
 | --- | --- |
@@ -91,9 +93,19 @@ validates that app. Apple service errors stop publication; inspect the retained
 submission ID with `notarytool log` using the same credentials. Do not bypass
 a rejected submission.
 
-No certificate import, notarization submission, or publication was performed
-while scaffolding. The first signed CI run and clean-Mac install remain release
-validation. Test Intel on Intel hardware, including Spaces and multiple displays.
+Version 0.1.0 was signed locally using the installed Developer ID certificate
+and existing `rotli-notary` Keychain profile on 2026-09-08. Apple accepted both
+architecture apps and DMGs; stapling, code signing, extracted tar validation,
+and Gatekeeper checks passed. The installers are published in the public
+[release](https://github.com/SethMed7/honu-releases/releases/tag/v0.1.0) and
+served by [Railway](https://honu.up.railway.app/). Both DMGs downloaded back
+from Railway passed stapler and Gatekeeper checks, and all four downloads
+matched their published checksums.
+
+Signing credentials were not copied into GitHub. The first signed Actions
+run, clean-Mac installation, and native UI checks remain separate validation.
+Test Intel on Intel hardware, including Spaces and multiple displays. See
+[Railway deployment](railway.md) for public distribution and redeployment.
 
 References: [Tauri signing](https://v2.tauri.app/distribute/sign/macos/),
 [Tauri window customization](https://v2.tauri.app/learn/window-customization/),
