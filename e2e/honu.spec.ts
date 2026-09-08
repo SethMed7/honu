@@ -142,3 +142,26 @@ test('landing preview retains settings across toggles, wipes on hide, and fits e
   await expect(page.getByRole('link', { name: 'Download for Intel' })).toHaveAttribute('href', /Honu_x86_64\.dmg$/);
   expect(failures).toEqual([]);
 });
+
+test.describe('touchscreen preview', () => {
+  test.use({ hasTouch: true });
+  test('phone and tablet controls have full touch targets', async ({ page }) => {
+    await page.goto('http://127.0.0.1:1421/honu/');
+    await page.locator('#desktop').scrollIntoViewIfNeeded();
+    await expect(page.getByRole('button', { name: 'Arrow (A)' })).toBeEnabled();
+    for (const width of [1024, 768, 390, 320]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.locator('#desktop').scrollIntoViewIfNeeded();
+      const valid = await page.locator('.drawing-tools button').evaluateAll(buttons => buttons.every(button => {
+        const r = button.getBoundingClientRect();
+        const canvas = button.closest('.honu-canvas')!.getBoundingClientRect();
+        return r.width >= 44 && r.height >= 44 && r.left >= canvas.left && r.right <= canvas.right && r.bottom <= canvas.bottom;
+      }));
+      expect(valid).toBe(true);
+      await page.getByRole('button', { name: 'Arrow (A)' }).tap();
+      await page.getByRole('button', { name: 'Orange', exact: true }).tap();
+      await page.getByRole('button', { name: '4px stroke', exact: true }).tap();
+      await expect(page.getByRole('button', { name: '4px stroke' })).toHaveAttribute('aria-pressed', 'true');
+    }
+  });
+});

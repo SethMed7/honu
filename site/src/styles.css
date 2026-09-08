@@ -68,6 +68,14 @@ pre { margin: 0; padding: 0 0 24px; font: 12px/1.85 'SFMono-Regular', Consolas, 
 .backdrop-credit { text-align: center; font-size: 12px; color: var(--muted); padding: 0 18px 24px; }
 .backdrop-credit a { text-decoration: underline; text-underline-offset: 3px; }
 .backdrop-credit a:hover { color: var(--accent); }
+/* A wide tablet still needs touch targets. Dock the demo controls so every
+   color and weight gets the same 44px target as on a phone. */
+@media (pointer: coarse) {
+  .annotation-layer .honu-embedded .drawing-tools { inset: auto 12px 12px; width: auto; }
+  .annotation-layer .honu-embedded .tool-row { justify-content: center; }
+  .annotation-layer .honu-embedded .drawing-tools button, .annotation-layer .honu-embedded .widths button { width: 44px; height: 44px; }
+  .annotation-layer .honu-embedded .hud button { min-height: 44px; }
+}
 .preview-footnote { font-size: 12px; padding-top: 13px; color: var(--muted); }.preview-footnote p { color: var(--accent); }
 .features { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 80px; padding-top: 115px; padding-bottom: 95px; }
 h2 { font-size: clamp(1.9rem, 3.2vw, 2.7rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; }
