@@ -1,6 +1,6 @@
 {
   "name": "honu",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.4.0",
@@ -11,7 +11,7 @@
     "tauri": "tauri",
     "dev:app": "bun run assets && tauri dev",
     "dev:site": "vite --config site/vite.config.ts --host 127.0.0.1",
-    "build:site": "vite build --config site/vite.config.ts",
+    "build:site": "bun run assets && vite build --config site/vite.config.ts",
     "favicons": "bun scripts/generate-favicons.ts",
     "package:railway": "bun scripts/package-railway.ts",
     "check": "tsc --noEmit && bun test tests && bash -n scripts/release.sh && bun scripts/check-versions.ts",

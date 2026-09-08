@@ -1,12 +1,13 @@
 import { Component, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Excalidraw, MainMenu } from '@excalidraw/excalidraw';
-import type { AppState, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types';
+import type { AppState, ExcalidrawImperativeAPI, ExcalidrawInitialDataState } from '@excalidraw/excalidraw/types';
 import { isTauri } from '@tauri-apps/api/core';
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { exit } from '@tauri-apps/plugin-process';
-import { ArrowUpRight, Circle, Eraser, MousePointer2, Pencil, Square, Type } from 'lucide-react';
+import { ArrowUpRight, Circle, Diamond, Eraser, Minus, MousePointer2, Pencil, Square, Type } from 'lucide-react';
 import { actionForKey, isEditingTarget } from './shortcuts';
-import { clearBoard, type PenState } from './scene';
+import { clearBoard, updateStroke, type PenState } from './scene';
+import './canvas.css';
 
 const tools = [
   { type: 'selection', label: 'Select (V)', Icon: MousePointer2 },
@@ -14,16 +15,18 @@ const tools = [
   { type: 'arrow', label: 'Arrow (A)', Icon: ArrowUpRight },
   { type: 'rectangle', label: 'Rectangle (R)', Icon: Square },
   { type: 'ellipse', label: 'Ellipse (O)', Icon: Circle },
+  { type: 'diamond', label: 'Diamond (D)', Icon: Diamond },
+  { type: 'line', label: 'Line (L)', Icon: Minus },
   { type: 'text', label: 'Text (T)', Icon: Type },
   { type: 'eraser', label: 'Eraser (E)', Icon: Eraser },
 ] as const;
 const colors = [
-  ['#1e90ff', 'Ocean blue'], ['#63e6be', 'Seafoam'], ['#ff6b6b', 'Coral'],
-  ['#ffd43b', 'Sunshine'], ['#ffffff', 'White'], ['#212529', 'Ink'],
+  ['#ffad42', 'Orange'], ['#ffd43b', 'Yellow'], ['#ffffff', 'White'],
+  ['#161616', 'Black'], ['#1e90ff', 'Blue'], ['#ff6b6b', 'Red'],
 ] as const;
 const initialState = {
   viewBackgroundColor: 'transparent', currentItemBackgroundColor: 'transparent',
-  currentItemStrokeColor: '#1e90ff', currentItemStrokeWidth: 2,
+  currentItemStrokeColor: '#ffad42', currentItemStrokeWidth: 2,
   activeTool: { type: 'freedraw', locked: true, lastActiveTool: null, customType: null },
   showWelcomeScreen: false, gridModeEnabled: false,
 } as const;
@@ -43,9 +46,18 @@ class CanvasBoundary extends Component<{ children: ReactNode }, { failed: boolea
   }
 }
 
-export default function App() {
+type Props = {
+  embedded?: boolean;
+  visible?: boolean;
+  onHide?: () => void;
+  onNotice?: (notice: string) => void;
+  initialElements?: ExcalidrawInitialDataState['elements'];
+};
+
+export default function App({ embedded = false, visible = true, onHide, onNotice, initialElements = [] }: Props) {
+  const container = useRef<HTMLDivElement>(null);
   const [api, setApi] = useState<ExcalidrawImperativeAPI | null>(null);
-  const [pen, setPen] = useState({ color: '#1e90ff', width: 2, tool: 'freedraw' });
+  const [pen, setPen] = useState({ color: '#ffad42', width: 2, tool: 'freedraw' });
   const active = useRef<PenState | null>(null);
   const [notice, setNotice] = useState('');
   const [browserHidden, setBrowserHidden] = useState(false);
@@ -55,9 +67,10 @@ export default function App() {
   }, [api]);
   const dismiss = useCallback(async () => {
     clear();
+    if (embedded) { onHide?.(); return; }
     try { await hideWindow(); if (!isTauri()) setBrowserHidden(true); }
     catch { setNotice('Couldn’t hide Honu. Try the menu bar icon.'); }
-  }, [clear]);
+  }, [clear, embedded, onHide]);
   const quit = useCallback(async () => {
     clear();
     try { await quitApp(); if (!isTauri()) setNotice('Quit is available in the macOS app.'); }
@@ -66,8 +79,10 @@ export default function App() {
 
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
+      if (embedded && (!visible || !container.current?.contains(event.target as Node))) return;
       const action = actionForKey(event, isEditingTarget(event.target));
       if (!action) return;
+      if (embedded && action === 'quit') return;
       event.preventDefault();
       event.stopImmediatePropagation();
       if (action === 'clear') clear();
@@ -76,7 +91,10 @@ export default function App() {
     }
     window.addEventListener('keydown', onKey, true);
     return () => window.removeEventListener('keydown', onKey, true);
-  }, [clear, dismiss, quit]);
+  }, [clear, dismiss, quit, embedded, visible]);
+
+  useEffect(() => { if (notice) onNotice?.(notice); }, [notice, onNotice]);
+  useEffect(() => { if (visible) api?.refresh(); }, [visible, api]);
 
   useEffect(() => {
     if (!notice) return;
@@ -98,12 +116,12 @@ export default function App() {
     setPen({ color: state.currentItemStrokeColor, width: state.currentItemStrokeWidth, tool: state.activeTool.type });
   }, []);
 
-  return <main className={`overlay ${browserHidden ? 'browser-hidden' : ''}`} aria-label="Honu annotation canvas"
+  return <div ref={container} className={`honu-canvas ${embedded ? 'honu-embedded' : ''} ${browserHidden || !visible ? 'browser-hidden' : ''}`} aria-label="Honu annotation canvas"
     onContextMenuCapture={event => event.preventDefault()}
     onDropCapture={event => { event.preventDefault(); event.stopPropagation(); }}
     onDragOverCapture={event => event.preventDefault()}>
-    <CanvasBoundary><Excalidraw excalidrawAPI={setApi} initialData={{ elements: [], appState: initialState }}
-      onChange={onChange} theme="light" zenModeEnabled autoFocus aiEnabled={false}
+    <CanvasBoundary><Excalidraw excalidrawAPI={setApi} initialData={{ elements: initialElements, appState: initialState }}
+      onChange={onChange} theme="light" zenModeEnabled autoFocus={!embedded} handleKeyboardGlobally={!embedded} aiEnabled={false}
       onLinkOpen={(_element, event) => event.preventDefault()}
       onPaste={() => false}
       UIOptions={{ canvasActions: { changeViewBackgroundColor: false, clearCanvas: false, export: false,
@@ -111,11 +129,11 @@ export default function App() {
       <MainMenu />
     </Excalidraw></CanvasBoundary>
     <div className="hud" aria-label="Honu controls">
-      <span className="hud-brand"><img src="/turtle.svg" alt="" /> Honu</span>
+      <span className="hud-brand"><img src={`${import.meta.env.BASE_URL}turtle.svg`} alt="" /> Honu</span>
       <span className="hud-divider" />
-      <button onClick={clear}>Clear <kbd>C</kbd></button>
-      <button onClick={() => void dismiss()}>Hide <kbd>Esc</kbd></button>
-      <button className="quit" onClick={() => void quit()}>Quit <kbd>⌘Q</kbd></button>
+      <button id={embedded ? 'clear-preview' : undefined} onClick={clear}>Clear <kbd>C</kbd></button>
+      <button id={embedded ? 'hide-preview' : undefined} onClick={() => void dismiss()}>Hide <kbd>Esc</kbd></button>
+      {!embedded && <button className="quit" onClick={() => void quit()}>Quit <kbd>⌘Q</kbd></button>}
     </div>
     <div className="drawing-tools" aria-label="Drawing tools">
       <div className="tool-row" role="group" aria-label="Tools">{tools.map(({ type, label, Icon }) =>
@@ -123,16 +141,16 @@ export default function App() {
           onClick={() => api?.setActiveTool({ type, locked: true })}><Icon size={19} strokeWidth={1.7} /></button>)}</div>
       <div className="tool-row colors" role="group" aria-label="Pen color">{colors.map(([color, label]) =>
         <button key={color} aria-label={label} title={label} aria-pressed={pen.color === color} disabled={!api}
-          onClick={() => api?.updateScene({ appState: { currentItemStrokeColor: color } })}>
+          onClick={() => api && updateStroke(api, { color })}>
           <span style={{ backgroundColor: color }} />
         </button>)}</div>
       <div className="tool-row widths" role="group" aria-label="Stroke width">{[1, 2, 4].map(width =>
         <button key={width} aria-label={`${width}px stroke`} title={`${width}px stroke`} aria-pressed={pen.width === width} disabled={!api}
-          onClick={() => api?.updateScene({ appState: { currentItemStrokeWidth: width } })}>
+          onClick={() => api && updateStroke(api, { width })}>
           <span style={{ height: width }} />
         </button>)}</div>
     </div>
     <div className="notice" role="status">{notice}</div>
-    {!isTauri() && browserHidden && <button className="reopen" onClick={() => setBrowserHidden(false)}>Show Honu preview</button>}
-  </main>;
+    {!embedded && !isTauri() && browserHidden && <button className="reopen" onClick={() => setBrowserHidden(false)}>Show Honu preview</button>}
+  </div>;
 }

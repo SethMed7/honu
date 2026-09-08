@@ -44,7 +44,7 @@ components:
     border: "{colors.line}"
 ---
 
-<!-- Generated from site/src/styles.css, src/styles.css, and the user brief.
+<!-- Generated from site/src/styles.css, src/canvas.css, and the user brief.
 Canonical CSS wins conflicts. REGENERATE with bun scripts/document-design.ts;
 never hand-edit this generated file. Hex values are converted from OKLCH. -->
 
@@ -52,12 +52,13 @@ never hand-edit this generated file. Hex values are converted from OKLCH. -->
 
 Honu is a lightweight macOS screen annotation companion. A developer at a dim
 desk moves between a call and an editor; the charcoal page matches that setting
-while seafoam identifies actions. The desktop HUD keeps the actual screen
+while warm orange identifies actions. The portfolio’s Aetheria render appears
+in grayscale behind the hero and simulated desktop. The desktop HUD keeps the actual screen
 visible. The public page demonstrates the same transient drawing interaction.
 
 ## Colors
 
-Seafoam is the action color; charcoal surfaces stay quiet. Pen swatches are
+Orange is the action color; black and white surfaces stay neutral. Pen swatches are
 literal drawing colors. Main text/background contrast is ${contrast('ink','bg').toFixed(2)}:1,
 secondary text is ${contrast('muted','bg').toFixed(2)}:1, and primary button text is
 ${contrast('on-accent','accent').toFixed(2)}:1. Named rule: readable secondary copy.
@@ -72,7 +73,7 @@ Small type is reserved for secondary metadata and the simulated desktop.
 ## Elevation
 
 Depth comes from the real overlay relationship, not decorative shadows.
-Only the native HUD uses a 12px backdrop blur, backed by near-opaque charcoal
+The shared drawing HUD uses a 12px backdrop blur, backed by near-opaque charcoal
 for readability over arbitrary screens. Corners: 8px buttons, 12px preview,
 14px drawing toolbar, pill-shaped action HUD.
 
@@ -80,7 +81,9 @@ for readability over arbitrary screens. Corners: 8px buttons, 12px preview,
 
 The landing page uses a header, centered hero, live drawable desktop preview,
 an open feature list, shortcut table, architecture download links, and footer.
-The native surface uses a top-right action pill and a separate left toolbar.
+The native app and website share the same Excalidraw canvas, top-right action
+pill, and working tool, color, and stroke controls. Selection can recolor
+existing shapes. On small canvases, the full toolbar docks at the bottom.
 Named rule: ephemeral by default. Drawing, color, tool, and weight stay in memory.
 Clear also erases history. File import/export and remote calls have no UI path.
 
@@ -100,7 +103,7 @@ annotations are purposeful exceptions to generic illustration restrictions.
 await writeFile('DESIGN.md', doc);
 await mkdir('.impeccable', { recursive: true });
 await writeFile('.impeccable/design.json', JSON.stringify({
-  schemaVersion: 2, sources: ['site/src/styles.css','src/styles.css'],
+  schemaVersion: 2, sources: ['site/src/styles.css','src/canvas.css'],
   colors, motion: { transitionMs: 160, heroMs: 650, reducedMotion: 'none' },
   breakpoints: { compact: 600, medium: 900 },
   components: ['brand','button-primary','button-secondary','preview-hud','drawing-tools','shortcuts'],

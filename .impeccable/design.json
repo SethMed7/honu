@@ -2,16 +2,16 @@
   "schemaVersion": 2,
   "sources": [
     "site/src/styles.css",
-    "src/styles.css"
+    "src/canvas.css"
   ],
   "colors": {
-    "bg": "#101513",
-    "surface": "#191e1c",
-    "ink": "#eef3f1",
-    "muted": "#9faba5",
-    "accent": "#82eab9",
-    "line": "#343d39",
-    "on-accent": "#0c1f17"
+    "bg": "#0a0a0a",
+    "surface": "#1d1d1d",
+    "ink": "#f2f2f2",
+    "muted": "#a8a8a8",
+    "accent": "#faab3f",
+    "line": "#3a3a3a",
+    "on-accent": "#0b0b0b"
   },
   "motion": {
     "transitionMs": 160,

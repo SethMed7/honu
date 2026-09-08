@@ -1,0 +1,52 @@
+.honu-canvas { position: relative; width: 100%; height: 100%; overflow: hidden; color: oklch(0.96 0 0); font: 13px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: transparent; container-type: inline-size; }
+.honu-canvas *, .honu-canvas *::before, .honu-canvas *::after { box-sizing: border-box; }
+.honu-canvas .excalidraw, .honu-canvas .excalidraw .App-main, .honu-canvas .excalidraw canvas { background: transparent !important; background-color: transparent !important; }
+/* Honu exposes its own toolbars. Canvas selection, transforms, text editing,
+   and keyboard tools stay available without file or library chrome. */
+.honu-canvas .excalidraw .App-menu_top, .honu-canvas .excalidraw .layer-ui__wrapper__footer,
+.honu-canvas .excalidraw .App-toolbar, .honu-canvas .excalidraw .help-icon,
+.honu-canvas .excalidraw .main-menu-trigger, .honu-canvas .excalidraw .sidebar-trigger,
+.honu-canvas .excalidraw .HintViewer,
+.honu-canvas .excalidraw .mobile-misc-tools-container { display: none !important; }
+.honu-canvas button { font: inherit; cursor: pointer; }
+.honu-canvas button:focus-visible { outline: 2px solid oklch(0.8 0.15 70); outline-offset: 2px; }
+.honu-canvas button:disabled { cursor: wait; opacity: 0.5; }
+.honu-canvas .hud, .honu-canvas .drawing-tools { position: absolute; z-index: 10; background: oklch(0.17 0 0 / 0.96); border: 1px solid oklch(0.39 0 0); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.honu-canvas .hud { top: max(40px, env(safe-area-inset-top)); right: 24px; display: flex; align-items: center; padding: 5px 8px 5px 14px; border-radius: 999px; gap: 4px; }
+.honu-canvas .hud-brand { display: flex; align-items: center; gap: 7px; font-weight: 650; padding-right: 7px; white-space: nowrap; }
+.honu-canvas .hud-brand img { width: 25px; height: 25px; }
+.honu-canvas .hud-divider { width: 1px; height: 20px; background: oklch(0.39 0 0); margin-right: 4px; }
+.honu-canvas .hud button { display: flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 8px 11px; background: none; color: inherit; font-size: 13px; min-height: 38px; }
+.honu-canvas .hud button:hover, .honu-canvas .drawing-tools button:hover { background: oklch(0.3 0 0); }
+.honu-canvas kbd { font-family: inherit; font-size: 11px; color: oklch(0.77 0 0); }
+.honu-canvas .hud .quit, .honu-canvas .hud .quit kbd { color: oklch(0.8 0.08 22); }
+.honu-canvas .drawing-tools { top: 112px; left: 24px; padding: 6px; border-radius: 14px; width: 106px; }
+.honu-canvas .tool-row { display: flex; flex-wrap: wrap; gap: 2px; }
+.honu-canvas .tool-row + .tool-row { border-top: 1px solid oklch(0.37 0 0); margin-top: 6px; padding-top: 6px; }
+.honu-canvas .drawing-tools button { width: 44px; height: 40px; display: grid; place-items: center; border: 1px solid transparent; border-radius: 7px; color: inherit; background: none; padding: 0; }
+.honu-canvas .drawing-tools button[aria-pressed='true'] { background: oklch(0.8 0.15 70); border-color: oklch(0.9 0.06 70); color: oklch(0.15 0 0); }
+.honu-canvas .colors span { width: 18px; height: 18px; border-radius: 50%; border: 1px solid oklch(0.6 0 0); }
+.honu-canvas .colors button[aria-pressed='true'] span { outline: 2px solid oklch(0.14 0 0); outline-offset: 2px; }
+.honu-canvas .widths { flex-wrap: nowrap; }
+.honu-canvas .widths button { width: 29px; }
+.honu-canvas .widths span { background: currentColor; width: 19px; border-radius: 3px; }
+.honu-canvas .notice { position: absolute; z-index: 11; bottom: 25px; left: 50%; transform: translateX(-50%); font-size: 13px; border-radius: 8px; background: oklch(0.17 0 0); padding: 10px 16px; pointer-events: none; }
+.honu-canvas .notice:empty, .honu-embedded .notice { display: none; }
+.honu-canvas .canvas-error { position: absolute; inset: 100px 20px auto; background: oklch(0.2 0 0); padding: 24px; border-radius: 12px; }
+.honu-canvas.browser-hidden > :not(.reopen) { visibility: hidden; pointer-events: none; }
+.honu-canvas .reopen { position: absolute; top: 24px; right: 24px; border: 0; padding: 14px 20px; border-radius: 999px; background: oklch(0.8 0.15 70); color: oklch(0.15 0 0); }
+.honu-embedded .hud { top: 42px; right: 18px; }
+.honu-embedded .drawing-tools { top: 112px; left: 16px; }
+@container (max-width: 680px) {
+  .honu-canvas .hud { right: 12px; top: 16px; padding-left: 10px; }
+  .honu-canvas .hud button { padding: 8px; min-height: 44px; }
+  .honu-canvas .hud-brand { font-size: 14px; }
+  .honu-canvas .hud kbd { display: none; }
+  .honu-canvas .drawing-tools { left: 12px; right: 12px; top: auto; bottom: 12px; width: auto; padding: 6px; }
+  .honu-canvas .tool-row { justify-content: center; gap: 2px; }
+  .honu-canvas .drawing-tools button { height: 44px; }
+  .honu-canvas .widths button { width: 44px; }
+  .honu-canvas .notice { bottom: 235px; }
+  .honu-embedded .hud { top: 40px; }
+}
+@media (prefers-reduced-motion: reduce) { .honu-canvas *, .honu-canvas *::before, .honu-canvas *::after { animation: none !important; transition: none !important; } }

@@ -6,6 +6,7 @@ site/dist/
 src-tauri/target/
 src-tauri/gen/
 public/excalidraw-assets/
+site/public/excalidraw-assets/
 dist-release/
 test-results/
 playwright-report/

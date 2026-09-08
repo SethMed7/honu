@@ -5,11 +5,11 @@ const destination = 'site/public';
 await mkdir(destination, { recursive: true });
 const turtle = await readFile('public/turtle.svg', 'utf8');
 const inner = turtle.replace(/<\/?svg[^>]*>/g, '');
-// A solid dark field gives the small seafoam silhouette contrast in either
+// A solid dark field gives the small orange silhouette contrast in either
 // browser theme. Touch/manifest icons use full opaque squares for OS masking.
-const icon = (radius: number) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" rx="${radius}" fill="#173d33"/><g transform="translate(16 16)">${inner}</g></svg>`;
+const icon = (radius: number) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" rx="${radius}" fill="#161616"/><g transform="translate(16 16)">${inner}</g></svg>`;
 await writeFile(`${destination}/favicon.svg`, icon(20));
-await writeFile(`${destination}/safari-pinned-tab.svg`, turtle.replaceAll('#83e6bc', '#000000').replaceAll('#174336', '#000000'));
+await writeFile(`${destination}/safari-pinned-tab.svg`, turtle.replaceAll('#ffad42', '#000000').replaceAll('#161616', '#000000'));
 for (const [size, name] of [[16, 'favicon-16x16.png'], [32, 'favicon-32x32.png'], [180, 'apple-touch-icon.png'], [192, 'icon-192.png'], [512, 'icon-512.png']] as const) {
   await sharp(Buffer.from(icon(size < 100 ? 20 : 0))).resize(size, size).png().toFile(`${destination}/${name}`);
 }
@@ -31,7 +31,7 @@ frames.forEach((frame, index) => {
 await writeFile(`${destination}/favicon.ico`, Buffer.concat([header, ...frames]));
 await writeFile(`${destination}/site.webmanifest`, JSON.stringify({
   id: './', name: 'Honu — Screen annotations', short_name: 'Honu', start_url: './', scope: './',
-  display: 'browser', background_color: '#101614', theme_color: '#173d33',
+  display: 'browser', background_color: '#0a0a0a', theme_color: '#161616',
   icons: [192, 512].map(size => ({ src: `icon-${size}.png`, sizes: `${size}x${size}`, type: 'image/png', purpose: 'any maskable' })),
 }, null, 2) + '\n');
 console.log('Generated Honu SVG, multi-size ICO, PNG, touch, pinned-tab and manifest icons.');

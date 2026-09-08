@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#101614" />
+  <meta name="theme-color" content="#0a0a0a" />
   <meta name="description" content="Honu is a transparent, ephemeral Excalidraw HUD for macOS. Toggle on, draw over your screen, clear, and disappear. Nothing saved, nothing tracked." />
   <link rel="canonical" href="https://sethmedina.com/honu/" />
-  <link rel="icon" href="%BASE_URL%favicon.ico" sizes="any" />
-  <link rel="icon" href="%BASE_URL%favicon.svg" type="image/svg+xml" />
-  <link rel="icon" href="%BASE_URL%favicon-32x32.png" type="image/png" sizes="32x32" />
-  <link rel="icon" href="%BASE_URL%favicon-16x16.png" type="image/png" sizes="16x16" />
-  <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" sizes="180x180" />
-  <link rel="mask-icon" href="%BASE_URL%safari-pinned-tab.svg" color="#173d33" />
-  <link rel="manifest" href="%BASE_URL%site.webmanifest" />
+  <link rel="icon" href="%BASE_URL%favicon.ico?v=__HONU_VERSION__" sizes="any" />
+  <link rel="icon" href="%BASE_URL%favicon.svg?v=__HONU_VERSION__" type="image/svg+xml" />
+  <link rel="icon" href="%BASE_URL%favicon-32x32.png?v=__HONU_VERSION__" type="image/png" sizes="32x32" />
+  <link rel="icon" href="%BASE_URL%favicon-16x16.png?v=__HONU_VERSION__" type="image/png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png?v=__HONU_VERSION__" sizes="180x180" />
+  <link rel="mask-icon" href="%BASE_URL%safari-pinned-tab.svg?v=__HONU_VERSION__" color="#ffad42" />
+  <link rel="manifest" href="%BASE_URL%site.webmanifest?v=__HONU_VERSION__" />
   <meta name="apple-mobile-web-app-title" content="Honu" />
   <meta property="og:title" content="Honu — Make your point. Then disappear." />
   <meta property="og:description" content="Zero-bloat screen annotations for calls, decks, and quick demos. A tiny macOS menu bar companion." />
@@ -21,6 +21,7 @@
   <title>Honu — Zero-bloat screen annotations for macOS</title>
 </head>
 <body>
+  <div class="page-art" aria-hidden="true"><img src="/src/assets/aetheria-184729.webp" alt="" /></div>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="site-header page-width flex items-center justify-between gap-4">
     <a class="brand flex items-center gap-2.5" href="#" aria-label="Honu home"><img src="/turtle.svg" width="32" height="32" alt="" /><span>honu</span></a>
@@ -44,7 +45,7 @@
     <section class="preview-section page-width" aria-label="Interactive Honu preview">
       <div class="preview-caption flex flex-wrap items-center justify-between gap-3">
         <p><span class="live-dot" aria-hidden="true"></span> Your screen. With a little more clarity.</p>
-        <button id="toggle-preview" class="preview-toggle" aria-pressed="true" aria-controls="annotation-layer"><span id="toggle-label">Overlay on</span><kbd>⌘ ⇧ D</kbd></button>
+        <button id="toggle-preview" class="preview-toggle" disabled aria-pressed="true" aria-controls="annotation-layer"><span id="toggle-label">Overlay on</span><kbd>⌘ ⇧ D</kbd></button>
       </div>
       <div class="desktop" id="desktop">
         <div class="desktop-menu" aria-hidden="true"><div class="flex items-center gap-5"><span class="apple-mark">●</span><strong>Code</strong><span>File</span><span>Edit</span><span>View</span></div><div class="flex items-center gap-4"><img src="/turtle.svg" width="16" height="16" alt="" /><span>Tue 9:41 AM</span></div></div>
@@ -53,26 +54,21 @@
           <div class="editor-body">
             <aside class="editor-sidebar" aria-hidden="true"><p>EXPLORER</p><div>⌄ &nbsp; my-next-big-idea</div><div class="indent">⌄ &nbsp; src</div><div class="selected">TS &nbsp; screen-share.ts</div><div class="indent">TS &nbsp; app.ts</div><div class="indent">{} &nbsp; package.json</div><div class="indent">◈ &nbsp; README.md</div></aside>
             <div class="code-pane"><div class="code-tab"><span>TS</span> screen-share.ts <span class="tab-close">×</span></div><div class="code-breadcrumb">src &nbsp; › &nbsp; screen-share.ts</div>
-              <pre aria-label="Example code being annotated"><code><span class="line"><b>1</b><em>// Good ideas deserve a little emphasis.</em></span><span class="line"><b>2</b></span><span class="line"><b>3</b><span class="purple">const</span> <span class="blue">shareAnIdea</span> = () <span class="purple">=&gt;</span> {</span><span class="line"><b>4</b>  <span class="purple">const</span> screen = <span class="green">'whatever you’re working on'</span>;</span><span class="line"><b>5</b>  <span class="purple">const</span> honu = <span class="blue">toggleOverlay</span>();</span><span class="line"><b>6</b></span><span class="line"><b>7</b>  honu.<span class="blue">draw</span>({</span><span class="line"><b>8</b>    color: <span class="green">'seafoam'</span>,</span><span class="line"><b>9</b>    point: <span class="green">'right here'</span>,</span><span class="line"><b>10</b>  });</span><span class="line"><b>11</b></span><span class="line"><b>12</b>  <span class="blue">makeYourPoint</span>();</span><span class="line"><b>13</b>  honu.<span class="blue">disappear</span>();</span><span class="line"><b>14</b>};</span></code></pre>
+              <pre aria-label="Example code being annotated"><code><span class="line"><b>1</b><em>// Good ideas deserve a little emphasis.</em></span><span class="line"><b>2</b></span><span class="line"><b>3</b><span class="purple">const</span> <span class="blue">shareAnIdea</span> = () <span class="purple">=&gt;</span> {</span><span class="line"><b>4</b>  <span class="purple">const</span> screen = <span class="green">'whatever you’re working on'</span>;</span><span class="line"><b>5</b>  <span class="purple">const</span> honu = <span class="blue">toggleOverlay</span>();</span><span class="line"><b>6</b></span><span class="line"><b>7</b>  honu.<span class="blue">draw</span>({</span><span class="line"><b>8</b>    color: <span class="green">'orange'</span>,</span><span class="line"><b>9</b>    point: <span class="green">'right here'</span>,</span><span class="line"><b>10</b>  });</span><span class="line"><b>11</b></span><span class="line"><b>12</b>  <span class="blue">makeYourPoint</span>();</span><span class="line"><b>13</b>  honu.<span class="blue">disappear</span>();</span><span class="line"><b>14</b>};</span></code></pre>
               <div class="editor-status">⑂ main <span>TypeScript &nbsp; UTF-8 &nbsp; ✓</span></div>
             </div>
           </div>
         </div>
         <div id="annotation-layer" class="annotation-layer">
-          <svg class="sample-annotations" id="sample-annotations" viewBox="0 0 1100 550" fill="none" aria-label="Seafoam annotations circle the key idea and point to the code">
-            <g stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M351 208c91-11 262-13 371-3m-368 11c102-11 231-9 371-6"/><path d="M406 267c-12-35 213-40 244-13 44 38-181 79-234 43-11-7-10-21 2-31"/><path d="M813 325c-26-46-58-56-133-51m28-15-31 15 26 17"/><path d="M351 408c64 6 121 4 179-3"/></g>
-            <g fill="currentColor" font-family="'Comic Sans MS', 'Chalkboard SE', cursive" font-size="24"><text x="790" y="362" transform="rotate(-5 790 362)">this is the good part</text><text x="538" y="439" transform="rotate(-4 538 439)">and… gone.</text></g>
-          </svg>
-          <canvas id="drawing-canvas" aria-label="Draw on the desktop preview using your mouse or finger"></canvas>
-          <div class="preview-hud"><span><img src="/turtle.svg" width="21" height="21" alt="" /> Honu</span><button id="clear-preview">Clear <kbd>C</kbd></button><button id="hide-preview">Hide <kbd>Esc</kbd></button></div>
-          <div class="preview-pen" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m15 4 5 5M4 20l5-1L20 8a2 2 0 0 0-5-5L4 14z"/></svg><i></i><span></span></div>
+          <p class="preview-loading" role="status">Loading your canvas…</p>
+          <noscript>Enable JavaScript to try the drawing tools, or download Honu below.</noscript>
         </div>
       </div>
-      <div class="preview-footnote flex flex-wrap items-center justify-between gap-2"><p id="preview-status" role="status">Go ahead. Draw something.</p><span>Simulated desktop · Real little scribbles</span></div>
+      <div class="preview-footnote flex flex-wrap items-center justify-between gap-2"><p id="preview-status" role="status">Pick a tool, pick a color. Make your point.</p><span>Arrows, shapes, text. All yours to try.</span></div>
     </section>
 
     <section class="features page-width" aria-labelledby="features-title">
-      <div class="feature-intro"><h2 id="features-title">Make your point.<br /><span>Then disappear.</span></h2><p>Built for the moment when “right here” needs a circle around it.</p></div>
+      <div class="feature-intro"><h2 id="features-title">Make your point.<br /><span>Then disappear.</span></h2><p>Circle an idea. Draw the connection. Put an arrow right where it matters.</p></div>
       <div class="feature-list">
         <article><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-8z"/></svg><div><h3>Instant overlay</h3><p>Press <kbd>⌘ ⇧ D</kbd> and your screen becomes a canvas. Sketch over a call, a deck, or your IDE. Toggle again to get back to it.</p></div></article>
         <article><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16 8-12 8 6-8 12H8zM9 22h12M8 10l8 6"/></svg><div><h3>Zero persistence</h3><p>No files generated, no cloud sync, no clutter. Clear on demand, or quit and leave every stroke behind.</p></div></article>
@@ -103,6 +99,7 @@
     </section>
   </main>
   <footer class="site-footer page-width flex flex-wrap justify-between items-center gap-4"><a class="brand flex items-center gap-2" href="#"><img src="/turtle.svg" width="24" height="24" alt="" />honu</a><p>A little turtle by <a href="https://sethmedina.com">Seth Medina</a>. © <span id="year">2026</span></p><a href="https://github.com/SethMed7/honu-releases">Built with Tauri &amp; Excalidraw ↗</a></footer>
+  <p class="backdrop-credit">Background made with <a href="https://aetheria.sethmedina.com">Aetheria ↗</a></p>
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

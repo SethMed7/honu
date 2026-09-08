@@ -3,8 +3,14 @@ import { createHash } from 'node:crypto';
 
 const stage = '.deploy/railway';
 const targets = [['aarch64-apple-darwin', 'aarch64'], ['x86_64-apple-darwin', 'x86_64']] as const;
+const { version } = JSON.parse(await readFile('package.json', 'utf8'));
+let releaseCommit: string | undefined;
 // Fail before staging unless both distribution archives passed notarization.
 for (const [target, arch] of targets) {
+  const evidence = JSON.parse(await readFile(`dist-release/${target}/evidence-${arch}.json`, 'utf8'));
+  if (evidence.version !== version || evidence.target !== target || !evidence.commit) throw new Error(`Rebuild ${target} for Honu ${version}`);
+  if (releaseCommit && evidence.commit !== releaseCommit) throw new Error('Both installers must use the same source commit');
+  releaseCommit = evidence.commit;
   for (const kind of ['app', 'dmg']) {
     const record = JSON.parse(await readFile(`dist-release/${target}/notary-${kind}-${arch}.json`, 'utf8'));
     if (record.status !== 'Accepted') throw new Error(`${target} ${kind} is not notarized`);

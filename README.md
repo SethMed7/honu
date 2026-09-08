@@ -26,8 +26,8 @@ containing the pointer. Toggle off to interact with the application underneath.
 
 `C` does not clear while typing text. Keyboard actions do not interrupt IME
 composition. `Esc` otherwise wipes even during text editing. The left HUD
-provides selection, pen, arrow, rectangle, ellipse, text, eraser, colors, and
-stroke weight. Ordinary Excalidraw tool and undo shortcuts remain available.
+provides selection, pen, arrow, rectangle, ellipse, diamond, line, text, eraser, colors, and
+stroke weight. Select a shape to change its color or weight. Ordinary Excalidraw tool and undo shortcuts remain available.
 
 ## Project structure
 
@@ -37,7 +37,8 @@ honu/
 │   ├── App.tsx                 # Excalidraw, floating HUD, memory-only pen
 │   ├── scene.ts                # Clear scene/files/history; retain pen
 │   ├── shortcuts.ts            # Keyboard policy, including text inputs
-│   ├── styles.css              # Transparent canvas and compact controls
+│   ├── canvas.css              # Shared responsive drawing controls
+│   ├── styles.css              # Native transparent document
 │   ├── env.d.ts
 │   └── main.tsx
 ├── src-tauri/
@@ -52,7 +53,9 @@ honu/
 │   └── Info.plist              # LSUIElement; no Dock icon
 ├── site/
 │   ├── index.html             # Semantic marketing page
-│   ├── src/{main.ts,styles.css}# Drawable preview, Tailwind, local fonts
+│   ├── src/preview.tsx         # Real shared Excalidraw demo
+│   ├── src/{main.ts,styles.css}# Lazy loading, Tailwind, local fonts
+│   ├── src/assets/            # Portfolio Aetheria background
 │   ├── public/turtle.svg
 │   └── vite.config.ts         # Static output with /honu/ asset base
 ├── scripts/
@@ -114,9 +117,11 @@ bun run build:site      # static output in site/dist/
 ```
 
 Copy the **contents** of `site/dist/` into the existing site's public `honu/`
-directory. No server, React runtime, external font request, or analytics is
-required. `site/index.html` is also a source template for an existing Tailwind
-site; keep the stylesheet and small preview script with it.
+directory. The marketing page is static HTML; its drawing area lazy-loads the
+same React/Excalidraw component as the app. Keep all generated assets and local
+fonts with it. There are no external font requests or analytics. The palette
+is black and white with orange controls; Seth’s portfolio Aetheria render is
+displayed in grayscale behind the page and mock desktop.
 
 The Railway site is **https://honu.up.railway.app/** and serves installers from
 its own `downloads/` directory. The public GitHub mirror is
@@ -136,7 +141,7 @@ bun run tauri build --debug --bundles app -- --locked
 frontend builds, production browser interactions, Rust formatting, Clippy, and Cargo's
 test harness. Browser coverage checks transparent pixels, erase/undo behavior,
 pen retention and reload reset, text editing, no browser storage writes, preview
-drawing/toggling, and widths from 320px to 1440px. Native window/tray/Spaces
+shape/arrow drawing, selected-object recoloring, every toolbar control, toggling, and widths from 320px to 1440px. Native window/tray/Spaces
 behavior requires [macOS checks](docs/native-validation.md).
 
 Vite reports large chunks in upstream Excalidraw drawing/font/diagram code.
