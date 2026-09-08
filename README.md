@@ -128,6 +128,10 @@ its own `downloads/` directory. The public GitHub mirror is
 `SethMed7/honu-releases`; source is private in `SethMed7/honu`.
 See [Railway setup](docs/railway.md) for rebuilding, deploying, and adding DNS.
 A normal local build does not deploy or publish; use the explicit deploy script.
+The page includes static Open Graph/X preview metadata and a branded social
+image. Run `bun run favicons` or `bun run social-card` after editing their
+source artwork. Root `public/` icons and `t3.json` also identify the local
+workspace. See [icons and link previews](docs/railway.md#favicons) for details.
 
 ## Validate and build
 

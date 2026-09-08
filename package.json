@@ -13,6 +13,7 @@
     "dev:site": "vite --config site/vite.config.ts --host 127.0.0.1",
     "build:site": "bun run assets && vite build --config site/vite.config.ts",
     "favicons": "bun scripts/generate-favicons.ts",
+    "social-card": "bun scripts/generate-social-card.ts",
     "package:railway": "bun scripts/package-railway.ts",
     "check": "tsc --noEmit && bun test tests && bash -n scripts/release.sh && bun scripts/check-versions.ts",
     "test:e2e": "playwright test",

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8" />
+<style>
+  @font-face { font-family: Manrope; src: url('__FONT__') format('woff2'); font-weight: 200 800; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body { position: relative; isolation: isolate; background: #0a0a0a; color: #f2f2f2; font-family: Manrope, sans-serif; }
+  .art { position: absolute; z-index: -1; top: -70px; right: -250px; width: 1400px; filter: grayscale(1); opacity: .3; mask-image: radial-gradient(ellipse at 75% 42%, black, transparent 66%); }
+  .brand { position: absolute; top: 56px; left: 64px; display: flex; align-items: center; gap: 14px; font-size: 42px; font-weight: 750; letter-spacing: -.035em; }
+  .brand img { width: 54px; height: 54px; }
+  h1 { position: absolute; top: 185px; left: 64px; margin: 0; font-size: 70px; font-weight: 650; letter-spacing: -.038em; line-height: 1.16; }
+  h1 span { display: block; color: #b8b8b8; }
+  .description { position: absolute; top: 395px; left: 67px; margin: 0; color: #b8b8b8; font-size: 27px; line-height: 1.5; }
+  .footer { position: absolute; bottom: 50px; left: 67px; right: 64px; padding-top: 24px; border-top: 1px solid #383838; display: flex; justify-content: space-between; font-size: 22px; font-weight: 550; }
+  .footer span:last-child { color: #b8b8b8; }
+  .annotation { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .tools { position: absolute; right: 64px; top: 135px; padding: 10px; width: 76px; border: 1px solid #484848; border-radius: 18px; background: #151515; display: grid; gap: 4px; }
+  .tool { width: 54px; height: 54px; display: grid; place-items: center; border-radius: 9px; }
+  .tool svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .tool.active { background: #ffad42; color: #111; }
+  .colors { display: flex; justify-content: center; gap: 10px; margin-top: 8px; padding: 15px 0 8px; border-top: 1px solid #484848; }
+  .colors i { width: 17px; height: 17px; border-radius: 50%; background: #ffad42; }
+  .colors i:last-child { background: #fff; }
+  .shortcut { position: absolute; right: 205px; top: 74px; display: flex; align-items: center; gap: 8px; color: #b8b8b8; font-size: 21px; }
+  kbd { display: inline-grid; place-items: center; min-width: 40px; height: 40px; border: 1px solid #484848; border-bottom-width: 3px; border-radius: 7px; font: inherit; background: #171717; }
+</style>
+<img class="art" src="__BACKGROUND__" alt="" />
+<div class="brand"><img src="__TURTLE__" alt="" />honu</div>
+<div class="shortcut"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>D</kbd></div>
+<h1>Make your point.<span>Then disappear.</span></h1>
+<p class="description">Draw over your screen.<br />Nothing saved. Nothing tracked.</p>
+<svg class="annotation" viewBox="0 0 1200 630" fill="none" aria-hidden="true">
+  <g stroke="#ffad42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M410 260c58 9 155 8 196-1m-194 8c48 4 135 4 191-2" />
+    <path d="M829 231c-41-17-72 51-54 89 13 30 105 21 129-18 17-28-20-67-74-71z" />
+    <path d="M988 432c-42-19-75-48-102-90m-1 32-2-37 35 13" />
+  </g>
+</svg>
+<div class="tools" aria-hidden="true">
+  <div class="tool"><svg viewBox="0 0 24 24"><path d="m15 4 5 5M4 20l5-1L20 8a2 2 0 0 0-5-5L4 14z" /></svg></div>
+  <div class="tool active"><svg viewBox="0 0 24 24"><path d="M5 19 19 5M5 5h14v14" /></svg></div>
+  <div class="tool"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1" /></svg></div>
+  <div class="tool"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /></svg></div>
+  <div class="colors"><i></i><i></i></div>
+</div>
+<div class="footer"><span>Screen annotations for macOS</span><span>A little menu bar companion.</span></div>
+</html>

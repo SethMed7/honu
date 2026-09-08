@@ -2,8 +2,7 @@
 
 Production URL: **https://honu.up.railway.app/**
 
-Current release: **0.2.0**, deployment `d34342cb-0153-4d61-9724-e0dd575e3146`
-(2026-09-08). The demo shares the app's real Excalidraw tools, colors, and
+Current app release: **0.2.0** (2026-09-08). The demo shares the app's real Excalidraw tools, colors, and
 stroke settings. Its Aetheria background is the portfolio render in grayscale;
 the site and icons use black, white, and orange. The page, all icon files, and
 all four 0.2.0 downloads were verified on the live URL. Browser interactions
@@ -56,7 +55,32 @@ path, including the `downloads/` directory. DNS alone cannot route a subpath.
 
 ## Favicons
 
-`bun run favicons` regenerates the shared turtle identity as SVG, a 16/32/48px
-ICO, 16/32px PNGs, a 180px Apple touch icon, 192/512px manifest icons, and a
-monochrome Safari pinned-tab icon. All URLs respect Vite's configured base.
+`bun run favicons` regenerates the shared turtle identity as SVG, a multi-size
+ICO (16–256px), PNG fallbacks (16/32/48/96/192px), a 180px Apple touch icon,
+192/512px manifest icons, and a monochrome Safari pinned-tab icon. All page
+URLs respect Vite's configured base. Conventional icons are also copied to
+the root `public/` directory for local tabs and project discovery; `t3.json`
+explicitly selects `public/favicon.svg` for the T3 workspace. T3 can cache a
+previous missing icon until its next request; refresh its view if needed.
 No remote icon/font request or service worker is required.
+
+## Link previews
+
+The initial HTML includes Open Graph and X `summary_large_image` metadata,
+absolute HTTPS URLs, image dimensions and alt text. The 1200×630 PNG uses the
+same turtle, Manrope typeface, grayscale Aetheria artwork, and orange accent
+as the site. It works without client-side JavaScript.
+
+Edit `site/social-card.html`, then run `bun run social-card` to regenerate
+`site/public/social/honu-preview.png` with local Playwright Chromium. The PNG
+is checked in, so ordinary builds do not require a browser. Each build emits
+a content-hashed image URL; changing the artwork automatically changes the
+URL advertised to crawlers. Platforms still control their page-preview cache.
+
+`HONU_SITE_ORIGIN` and `HONU_SITE_BASE` determine the canonical URL, Open Graph
+URL, social image URL, and sitemap. Railway's deploy script sets these to the
+Railway origin and `/`. Default builds use `https://sethmedina.com/honu/`.
+When serving under a portfolio subpath, merge the generated sitemap reference
+into the host's root `robots.txt`; crawlers read robots rules at the host root.
+After deploying, check the raw HTML, referenced image, `/robots.txt`, and
+`/sitemap.xml`, including requests with a `Twitterbot/1.0` user agent.
