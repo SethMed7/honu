@@ -1,5 +1,16 @@
 # Native acceptance checks
 
+Version 0.2.0 evidence (2026-09-08): six shortcut tests and six production
+browser tests passed, covering shape/arrow geometry, selected-object
+recoloring, stroke widths, toggles, wipe behavior, and full touch targets from
+320–1440px. Frontend builds, TypeScript, rustfmt, Clippy, and Cargo tests passed.
+Both architecture apps were built from `c439a039dbfa46b8b56a954d92e27cf82fd27279`,
+signed, accepted by Apple, stapled, and validated. Both public DMGs downloaded
+from Railway passed stapler and Gatekeeper checks; all four public archives
+matched their release hashes. The later website-only commit adds tablet touch
+target rules. Native window/tray/Spaces interaction checks below still require
+an interactive Mac session.
+
 Implementation-session evidence (2026-09-08): six shortcut tests and three
 production browser tests passed; both frontend builds passed; Rust checking
 passed for Apple Silicon and Intel; Clippy and formatting passed. A development

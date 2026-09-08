@@ -1,5 +1,10 @@
 # Signing and releases
 
+Latest public release: [Honu 0.2.0](https://github.com/SethMed7/honu-releases/releases/tag/v0.2.0).
+Both apps and DMGs were signed and notarized locally using the existing
+Developer ID certificate and `rotli-notary` Keychain profile. Both Railway DMG
+downloads passed Gatekeeper; all four downloads matched their release hashes.
+
 Honu follows `~/rotli/scripts/release.sh`: Developer ID signing with the hardened
 runtime, notarize/staple the `.app`, archive the stapled app, build a DMG using
 headless `hdiutil`, then sign/notarize/staple/validate that DMG. Honu adds a

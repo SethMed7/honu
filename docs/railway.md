@@ -2,6 +2,13 @@
 
 Production URL: **https://honu.up.railway.app/**
 
+Current release: **0.2.0**, deployment `d34342cb-0153-4d61-9724-e0dd575e3146`
+(2026-09-08). The demo shares the app's real Excalidraw tools, colors, and
+stroke settings. Its Aetheria background is the portfolio render in grayscale;
+the site and icons use black, white, and orange. The page, all icon files, and
+all four 0.2.0 downloads were verified on the live URL. Browser interactions
+passed at 1440, 1024, and 390px without errors or failed requests.
+
 Initial production deployment `533f3c8e-aa83-4190-89a7-e1a48997fae1` succeeded
 on 2026-09-08. Version 0.1.0 is also available in the public
 [GitHub release](https://github.com/SethMed7/honu-releases/releases/tag/v0.1.0).
@@ -27,7 +34,8 @@ artifacts. It excludes application source and signing credentials.
    `/favicon.ico`, and both `/downloads/Honu_<arch>.dmg` routes.
 
 Packaging checks Apple's `Accepted` records and installer SHA-256 hashes
-before anything is uploaded. The public GitHub mirror is
+before anything is uploaded, and requires matching versions and source commits
+for both installers. The public GitHub mirror is
 `SethMed7/honu-releases`; source stays in private `SethMed7/honu`.
 The site's download buttons use same-origin Railway URLs. GitHub buttons lead
 to the public installer repository. The existing Actions release workflow
